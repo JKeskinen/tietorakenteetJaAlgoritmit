@@ -230,10 +230,6 @@ public class kurssitehtava {
         }
     }
 
-
-
-
-
         //------mergeSort-------//
     public static void mergeSort(int[] arr, int l, int r)
     {

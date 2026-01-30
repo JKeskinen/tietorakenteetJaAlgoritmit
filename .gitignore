@@ -1,0 +1,43 @@
+# Visual Studio / .NET
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build outputs
+[Bb]in/
+[Oo]bj/
+**/bin/
+**/obj/
+
+# BenchmarkDotNet artifacts
+BenchmarkDotNet.Artifacts/
+**/BenchmarkDotNet.Artifacts/
+results/
+
+# .NET runtime / build files
+*.dll
+*.exe
+*.pdb
+
+# Java
+*.class
+*.jar
+target/
+
+# IDEs
+.idea/
+*.iml
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+
+# Temporary
+*.tmp
+*.temp
