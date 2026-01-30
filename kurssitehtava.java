@@ -308,21 +308,18 @@ public class kurssitehtava {
         public static void averageIteration(FunctionPointer method, String name, int[] vakioRivi, int kierrokset) {
             // Taulukko yksittäisille ajoille (nanosekunteina)
             long[] ajat = new long[kierrokset];
-            
-
-            long sumNs = 0L;
+    
             System.out.println(name + ":");
             for (int i = 0; i < kierrokset; i++) {
                 // Kopioidaan lähtötaulukko, jotta metodi saa aina saman syötteen
                 int[] arr = java.util.Arrays.copyOf(vakioRivi, vakioRivi.length);
 
-                long t0 = System.nanoTime(); // Aloitusaika (monotonic)
-                method.methodSignature(arr); // Suorita testattava metodi
+                long t0 = System.nanoTime(); // Aloitusaika
+                method.methodSignature(arr); 
                 long t1 = System.nanoTime(); // Lopetusaika
 
-                long dur = t1 - t0; // Tallenna erotus nanosekunteina
+                long dur = t1 - t0; // Erotus nanosekunteina
                 ajat[i] = dur;
-                sumNs += dur;
 
                 double ms = dur / 1_000_000.0;
                 String msStr = String.format("%.3f", ms);
@@ -370,7 +367,7 @@ public class kurssitehtava {
         
 
         System.out.println("Keskiarvo-ajat....tässä kestää hieman enemmän aikaa..");
-        // Keskiarvomittaukset: sama taulukko jokaiselle kierrokselle
+        // Mediaanimittaukset: sama taulukko jokaiselle kierrokselle
         int n = 100000;
         int[] vakioRivi = makeRandomArray(n);
         int kierrokset = 7;
