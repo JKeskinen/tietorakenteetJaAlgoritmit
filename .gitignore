@@ -16,6 +16,7 @@
 BenchmarkDotNet.Artifacts/
 **/BenchmarkDotNet.Artifacts/
 results/
+Benchmarks/
 
 # .NET runtime / build files
 *.dll

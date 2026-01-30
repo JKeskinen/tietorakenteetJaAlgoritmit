@@ -3,11 +3,11 @@
 
 
 import java.util.Random;
-
+ 
 public class kurssitehtava {
     
 
-    // RANDOMARRYN LUONTI//
+    //------------RANDOMARRYN LUONTI-------------//
     public static int[] makeRandomArray(int n)
     {
         int[] array = new int[n];
@@ -17,7 +17,7 @@ public class kurssitehtava {
         }
         return array;
     }
-    //TULOSTETAAN ARRAY//
+    //--------TULOSTETAAN ARRAY-----------------//
     public static void printArray(int[] array)
     {
         for (int i : array) {
@@ -27,7 +27,7 @@ public class kurssitehtava {
     }
 
 
-        //--------insertionSort-------//
+    //-----------insertionSort-------------------//
     public static void insertionSort(int[] arr)
     {
         int n = arr.length;
@@ -42,7 +42,7 @@ public class kurssitehtava {
             arr[j + 1] = key;
         }
     }
-        //--------bubbleSort---------//
+    //------------bubbleSort-------------------//
     public static void bubbleSort(int[] arr)
     {
         int n = arr.length;
@@ -68,7 +68,7 @@ public class kurssitehtava {
             }
         
     }    
-        //---------shellSort--------//
+    //-------------shellSort--------------------//
     public static void shellSort(int[] arr)
     {
         int n = arr.length;
@@ -102,7 +102,21 @@ public class kurssitehtava {
     public static void arraySort(int[] arr)
     {
         java.util.Arrays.sort(arr);
-    }    
+    }
+
+    //------------Array laskeva--------//
+        
+    public static void arraySortDESC(int[] arr){  
+        
+        java.util.Arrays.sort(arr);
+        for (int i = 0, j = arr.length - 1; i < j; i++, j--) {
+            int tmp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = tmp;
+        }
+    }
+
+       
 
 
 
@@ -110,7 +124,7 @@ public class kurssitehtava {
 
 
 
-    //----QUICKSORT-partition osuus--------//
+    //----------------QUICKSORT-partition osuus--------//
     static int partition(int[] arr, int low, int high) {
         int pivot = arr[high];
         int i = low - 1;
@@ -123,14 +137,14 @@ public class kurssitehtava {
         swap(arr, i + 1, high);
         return i + 1;
     }
-    // Vaihtaa kahden alkion paikat
+    //------Vaihtaa kahden alkion paikat-----------//
     static void swap(int[] arr, int i, int j) {
         int temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }
 
-            //-------quickSort--------//
+        //----------------quickSort-------------------------//
     public static void quickSort(int[] arr,int low, int high)
     {
         if (low < high) {
@@ -147,7 +161,7 @@ public class kurssitehtava {
 
 
 
-        //----selectionSort------//
+    //----------selectionSort-----------------//
     public static void selectionSort(int[] arr)
     {
         int n = arr.length;
@@ -229,8 +243,7 @@ public class kurssitehtava {
             k++;
         }
     }
-
-        //------mergeSort-------//
+    //-------------------mergeSort---------------------------//
     public static void mergeSort(int[] arr, int l, int r)
     {
         if (l < r) {
@@ -245,10 +258,6 @@ public class kurssitehtava {
             merge(arr, l, m, r);
         }
     }   
-
-
-
-    
 
     public static void quickMethod(int[] arr)
     {
@@ -265,6 +274,8 @@ public class kurssitehtava {
     }
 
 
+
+
     private interface FunctionPointer {
         // Method signatures of pointed method
         void methodSignature(int[] arr);
@@ -273,28 +284,62 @@ public class kurssitehtava {
     public static void SortMethodTester(FunctionPointer methodToBeTested, String methodName, int n)
     {
         // Tehdään satunnainen taulukko.
-        // Oikeastaan taulukon luomismetodi (satunnainen, nouseva, laskeva)
-        // voitaisiin antaa myös parametrina.
         int[] array = makeRandomArray(100000);
 
         // otetaan alkuaika
         //long start = System.nanoTime();
         long millisStart = System.currentTimeMillis();
-
         // Kutsutaan parametrina annettua testattavaa metodia.
         methodToBeTested.methodSignature(array);
-
         // otetaan loppuaika
         //long end = System.nanoTime();
         long millisEnd = System.currentTimeMillis();
-
         //long kesto = end - start;
         long millisKesto = millisEnd - millisStart;
-
         // tulostetaan kestoaika
         //System.out.println(methodName + ": " + kesto);
         System.out.println(methodName + ": " + millisKesto + "ms");
+        
     }
+
+
+        
+        // Apumetodi keskiarvolle.
+        public static void averageIteration(FunctionPointer method, String name, int[] vakioRivi, int kierrokset) {
+            // Taulukko yksittäisille ajoille (nanosekunteina)
+            long[] ajat = new long[kierrokset];
+            
+
+            long sumNs = 0L;
+            System.out.println(name + ":");
+            for (int i = 0; i < kierrokset; i++) {
+                // Kopioidaan lähtötaulukko, jotta metodi saa aina saman syötteen
+                int[] arr = java.util.Arrays.copyOf(vakioRivi, vakioRivi.length);
+
+                long t0 = System.nanoTime(); // Aloitusaika (monotonic)
+                method.methodSignature(arr); // Suorita testattava metodi
+                long t1 = System.nanoTime(); // Lopetusaika
+
+                long dur = t1 - t0; // Tallenna erotus nanosekunteina
+                ajat[i] = dur;
+                sumNs += dur;
+
+                double ms = dur / 1_000_000.0;
+                String msStr = String.format("%.3f", ms);
+                System.out.println("  - " + msStr + " ms");
+                System.out.flush();
+            }
+
+            // Järjestetään ajat medianin laskemista varten
+            java.util.Arrays.sort(ajat);
+            long medianNs = ajat[kierrokset / 2];
+            double medianMs = medianNs / 1_000_000.0;
+            String medianStr = String.format("%.3f", medianMs);
+            System.out.println("Mediaani: " + medianStr + " ms (" + kierrokset + " kierrosta)");
+            System.out.println(" ");
+        }
+        
+    
 
     public static void main(String[] args) {
 
@@ -304,19 +349,39 @@ public class kurssitehtava {
         FunctionPointer bubbleSort = kurssitehtava::bubbleSort;
         FunctionPointer shellSort = kurssitehtava::shellSort;
         FunctionPointer arraySort = kurssitehtava::arraySort;
+        FunctionPointer arraySortDESC = kurssitehtava::arraySortDESC;
         FunctionPointer quickSort = kurssitehtava::quickSortWrapper;
         FunctionPointer selectionSort = kurssitehtava::selectionSort;
         FunctionPointer mergeSort = kurssitehtava::mergeSortWrapper;
         
         // ja näitä voisi kutsua silmukassa
-        SortMethodTester(bubbleSort, "bubbleSort", 1);
-        SortMethodTester(insertionSort, "insertionSort",1);
+        System.out.println("SortMethodTester");
+        SortMethodTester(bubbleSort, "bubbleSort", 100000);
+        SortMethodTester(insertionSort, "insertionSort",100000);
         //SortMethodTester((arr) -> sortMethodA(arr), "Method A", 100000);
-        SortMethodTester(selectionSort, "selectionSort", 1);
-        SortMethodTester(arraySort, "arraySort", 1);
-        SortMethodTester(shellSort, "shellSort", 1);
-        SortMethodTester(quickSort, "quickSort",1);
-        SortMethodTester(mergeSort, "mergeSort", 1);
+        SortMethodTester(selectionSort, "selectionSort", 100000);
+        SortMethodTester(arraySort, "arraySort", 100000);
+        SortMethodTester(arraySortDESC,"arraySortDESC",1000000);
+        SortMethodTester(shellSort, "shellSort", 100000);
+        SortMethodTester(quickSort, "quickSort",100000);
+        SortMethodTester(mergeSort, "mergeSort", 100000);
+        System.out.println(" ");
+        
+        
+
+        System.out.println("Keskiarvo-ajat....tässä kestää hieman enemmän aikaa..");
+        // Keskiarvomittaukset: sama taulukko jokaiselle kierrokselle
+        int n = 100000;
+        int[] vakioRivi = makeRandomArray(n);
+        int kierrokset = 7;
+
+        averageIteration(arraySort, "arraySort", vakioRivi, kierrokset);
+        averageIteration(shellSort, "shellSort", vakioRivi, kierrokset);
+        averageIteration(quickSort, "quickSort", vakioRivi, kierrokset);
+        averageIteration(mergeSort, "mergeSort", vakioRivi, kierrokset); 
+        averageIteration(insertionSort,"insertionSort", vakioRivi, kierrokset);
+        averageIteration(selectionSort,"selectionSort", vakioRivi, kierrokset);
+        averageIteration(bubbleSort, "bubbleSort", vakioRivi, kierrokset);
 
         // https://www.gregorygaines.com/blog/how-to-use-function-pointers-in-java/
     }
